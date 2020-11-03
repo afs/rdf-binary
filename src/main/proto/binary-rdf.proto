@@ -1,0 +1,165 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// Encoding in Protobuf of RDF terms and other items 
+// for Graph, Datasets, Result Set and Patches.
+
+// Protobuf messages are not self-delimiting so we need "containers" like RDF_Graph
+
+// c.f. Apache Thrift, items are delimiting and we can simply concatentate 
+// jena-arq/Grammar/BinaryRDF.trift 
+//  https://github.com/apache/jena/blob/master/jena-arq/Grammar/BinaryRDF.thrift
+//  https://gitbox.apache.org/repos/asf?p=jena.git;a=blob;f=jena-arq/Grammar/BinaryRDF.thrift;h=458d6ca60f959b00a6f244193b057e729d60c52a;hb=HEAD
+syntax = "proto3";
+
+option java_package         = "org.apache.jena.riot.protobuf" ;
+option java_outer_classname = "PB_RDF" ;
+
+// enum
+// oneof
+
+// ==== RDF Term Definitions 
+
+message RDF_IRI {
+  string iri = 1 ;
+} 
+ 
+// A prefix name (abbrev for an IRI)
+message RDF_PrefixName {
+  string prefix = 1 ;
+  string localName = 2 ;
+} 
+
+message RDF_BNode {
+  string label = 1 ;
+  // Maybe support a pair of longs
+//  int64 mostSig = 2 ;
+//  int64 leastSig = 3 ;
+} 
+
+// Common abbreviations for datatypes and other URIs?
+// union with additional values. 
+
+message RDF_Literal {
+  string lex = 1 ;
+  oneof langOrDatatype{ 
+    string langtag = 2 ;
+    string datatype = 3 ;
+    RDF_PrefixName dtPrefix = 4 ;
+  }
+}
+
+// struct RDF_Decimal {
+// 1: required i64  value ;
+// 2: required i32  scale ;
+// }
+
+message RDF_VAR {
+  string name = 1 ;
+}
+
+message RDF_ANY { }
+
+message RDF_UNDEF { }
+
+message RDF_REPEAT { }
+
+// protobuf oneof
+
+message RDF_Term {
+  oneof term {
+    RDF_IRI        iri        = 1 ;
+    RDF_BNode      bnode      = 2 ;
+    RDF_Literal    literal    = 3 ;
+    RDF_PrefixName prefixName = 4 ;
+    RDF_VAR        variable   = 5 ;
+    RDF_Triple     tripleTerm = 6 ;
+    RDF_ANY        any        = 7 ;
+    RDF_UNDEF      undefined  = 8 ;
+    RDF_REPEAT     repeat     = 9 ;
+  }
+}
+
+// oneof for a literal - add:
+// # Value forms of literals.
+// int64           valInteger
+// double          valDouble
+// RDF_Decimal     valDecimal
+
+// === StreamRDF items 
+
+message RDF_Triple {
+  RDF_Term S = 1 ;
+  RDF_Term P = 2 ;
+  RDF_Term O = 3 ;
+}
+
+message RDF_Quad {
+  RDF_Term S = 1 ;
+  RDF_Term P = 2 ;
+  RDF_Term O = 3 ;
+  RDF_Term G = 4 ;
+}
+
+// Prefix declaration
+message RDF_PrefixDecl {
+  string prefix = 1;
+  string uri    = 2 ;
+}
+
+// StreamRDF
+message RDF_StreamRow {
+  oneof row  {
+	RDF_PrefixDecl   prefixDecl  = 1 ;
+	RDF_Triple       triple      = 2 ;
+	RDF_Quad         quad        = 3 ;
+	RDF_IRI          base        = 4 ;
+  }
+}
+
+message RDF_Stream {
+  repeated RDF_StreamRow row = 1 ;
+}
+
+// ==== SPARQL Result Sets
+
+// struct RDF_VarTuple {
+// 1: list<RDF_VAR> vars
+// }
+// 
+// struct RDF_DataTuple {
+// 1: list<RDF_Term> row
+// }
+
+// // ==== RDF Patch
+// 
+// # Includes 
+// # Prefix declaration
+// 
+// enum RDF_Patch {
+//      ADD, 
+//      ADD_NO_OP,         // ADD recorded that had no effect
+//      DELETE, 
+//      DELETE_NO_OP       // DELETE recorded that had no effect
+// }
+
+// Local Variables:
+// tab-width: 2
+// indent-tabs-mode: nil
+// comment-default-style: "//"
+// End:

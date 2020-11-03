@@ -1,0 +1,106 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'com.google.protobuf' version '0.8.13'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    //maven { url = uri('http://repo.maven.apache.org/maven2') }
+}
+
+dependencies {
+    implementation 'io.grpc:grpc-netty-shaded:1.33.0'
+    implementation 'io.grpc:grpc-protobuf:1.33.0'
+    implementation 'io.grpc:grpc-stub:1.33.0'
+
+    implementation 'org.apache.avro:avro:1.10.0'
+
+    implementation 'org.apache.jena:apache-jena-libs:3.16.0'
+    implementation 'org.apache.jena:jena-fuseki-main:3.16.0'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
+    // gRPC uses JUL
+    implementation 'org.apache.logging.log4j:log4j-jul:2.13.3'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    testImplementation 'junit:junit:4.13.1'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+    //classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.13'
+}
+
+eclipse {
+    classpath {
+       downloadSources=true
+    }
+}
+
+group = 'org.seaborne'
+version = '0.0.0-SNAPSHOT'
+sourceCompatibility = '11'
+
+tasks.register('testsJar', Jar) {
+    archiveClassifier = 'tests'
+    from(sourceSets.test.output)
+}
+
+java {
+    withSourcesJar()
+}
+
+
+// sourceSets {
+//     main { java { srcDir "${generatedSourcePath}/main/grpc" } }
+//     test { java { srcDir "${generatedSourcePath}/test/grpc" } }
+// }
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+            srcDirs 'src/main/java'
+            srcDirs 'src/generated/main/java'
+            srcDirs 'src/generated/main/grpc/'
+        }
+    }
+}
+
+protobuf {
+
+  generatedFilesBaseDir = "$projectDir/src/generated"
+
+
+//  generatedFilesBaseDir = "$projectDir/src/generated"
+
+//   By default generated Java files are under $generatedFilesBaseDir/$sourceSet/$builtinPluginName, where $generatedFilesBaseDir is $buildDir/generated/source/proto by default, and is configurable. E.g.,
+// 
+// protobuf {
+//   ...
+//   generatedFilesBaseDir = "$projectDir/src/generated"
+// }
+
+
+
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.12.0"
+  }
+  plugins {
+    grpc {
+      artifact = 'io.grpc:protoc-gen-grpc-java:1.33.0'
+    }
+  }
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+    }
+  }
+}
+
+// publishing {
+//     publications {
+//         maven(MavenPublication) {
+//             from(components.java)
+//             artifact(testsJar)
+//         }
+//     }
+// }
