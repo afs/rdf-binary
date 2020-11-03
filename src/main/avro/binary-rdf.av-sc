@@ -1,0 +1,151 @@
+{
+ "namespace": "org.apache.jena.riot.avro"
+ "type": "",
+ "name": "Avro_IRI",
+ "fields" : [
+     { "name" : "iri" , "type" : "string" }
+ ]
+}
+
+{
+ "namespace": "org.apache.jena.riot.avro"
+ "type": "",
+ "name": "Avro_PrefixName",
+ "fields" : [
+     { "name" : "prefix",    "type" : "string" },
+     { "name" : "localName", "type" : "string" }
+ ]
+}
+
+{
+ "namespace": "org.apache.jena.riot.avro"
+ "type": "record",
+ "name": "Avro_BNode",
+ "fields" : [
+     { "name" : "label",    "type" : "string" }
+ ]
+}
+
+{
+ "namespace": "org.apache.jena.riot.avro"
+ "type": "",
+ "name": "Avro_Literal",
+ "fields" : [
+     { "name" : "lex",      "type" : "string" },
+     { "name" : "langtag",  "type" : [ null, "string"] },
+     { "name" : "datatype", "type" : [ null, "string"] },
+     { "name" : "dtPrefix", "type" : "Avro_PrefixName" },
+     
+     
+ ]
+}
+
+
+message RDF_Literal {
+  string lex = 1 ;
+  oneof langOrDatatype{ 
+    string langtag = 2 ;
+    string datatype = 3 ;
+    RDF_PrefixName dtPrefix = 4 ;
+  }
+}
+
+// struct RDF_Decimal {
+// 1: required i64  value ;
+// 2: required i32  scale ;
+// }
+
+message RDF_VAR {
+  string name = 1 ;
+}
+
+message RDF_ANY { }
+
+message RDF_UNDEF { }
+
+message RDF_REPEAT { }
+
+// protobuf oneof
+
+message RDF_Term {
+  oneof term {
+    RDF_IRI        iri        = 1 ;
+    RDF_BNode      bnode      = 2 ;
+    RDF_Literal    literal    = 3 ;
+    RDF_PrefixName prefixName = 4 ;
+    RDF_VAR        variable   = 5 ;
+    RDF_Triple     tripleTerm = 6 ;
+    RDF_ANY        any        = 7 ;
+    RDF_UNDEF      undefined  = 8 ;
+    RDF_REPEAT     repeat     = 9 ;
+  }
+}
+
+// oneof for a literal - add:
+// # Value forms of literals.
+// int64           valInteger
+// double          valDouble
+// RDF_Decimal     valDecimal
+
+// === StreamRDF items 
+
+message RDF_Triple {
+  RDF_Term S = 1 ;
+  RDF_Term P = 2 ;
+  RDF_Term O = 3 ;
+}
+
+message RDF_Quad {
+  RDF_Term S = 1 ;
+  RDF_Term P = 2 ;
+  RDF_Term O = 3 ;
+  RDF_Term G = 4 ;
+}
+
+// Prefix declaration
+message RDF_PrefixDecl {
+  string prefix = 1;
+  string uri    = 2 ;
+}
+
+// StreamRDF
+message RDF_StreamRow {
+  oneof row  {
+	RDF_PrefixDecl   prefixDecl  = 1 ;
+	RDF_Triple       triple      = 2 ;
+	RDF_Quad         quad        = 3 ;
+	RDF_IRI          base        = 4 ;
+  }
+}
+
+message RDF_Stream {
+  repeated RDF_StreamRow row = 1 ;
+}
+
+// ==== SPARQL Result Sets
+
+// struct RDF_VarTuple {
+// 1: list<RDF_VAR> vars
+// }
+// 
+// struct RDF_DataTuple {
+// 1: list<RDF_Term> row
+// }
+
+// // ==== RDF Patch
+// 
+// # Includes 
+// # Prefix declaration
+// 
+// enum RDF_Patch {
+//      ADD, 
+//      ADD_NO_OP,         // ADD recorded that had no effect
+//      DELETE, 
+//      DELETE_NO_OP       // DELETE recorded that had no effect
+// }
+
+// Local Variables:
+// tab-width: 2
+// indent-tabs-mode: nil
+// comment-default-style: "//"
+// End:

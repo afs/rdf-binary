@@ -60,9 +60,6 @@ public class ProtobufConvert
      * @return RDF_Term or null if not a value.
      */
     private static RDF_Term toProtobufValue(Node node, RDF_Term.Builder term) {
-        return null ;
-    }
-    private static RDF_Term toProtobufValueX(Node node, RDF_Term.Builder termBuilder) {
         if ( ! node.isLiteral() )
             return null ;
 
@@ -74,7 +71,6 @@ public class ProtobufConvert
             return null ;
 
         return null;
-
 
 //        if ( rdt.equals(XSDDatatype.XSDdecimal) ) {
 //            if ( rdt.isValid(lex)) {

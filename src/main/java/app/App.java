@@ -34,6 +34,7 @@ import rdfprotobuf.ProtobufConvert;
 public class App {
 
     public static void main(String[] args) throws IOException {
+
         Triple triple = SSE.parseTriple("(_:b :p 123)");
         RDF_Triple rdfTriple = ProtobufConvert.convert(triple, false);
 

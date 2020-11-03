@@ -8,7 +8,7 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
-    //maven { url = uri('http://repo.maven.apache.org/maven2') }
+    maven { url = uri('https://repository.apache.org/snapshots') }
 }
 
 dependencies {
@@ -17,6 +17,7 @@ dependencies {
     implementation 'io.grpc:grpc-stub:1.33.0'
 
     implementation 'org.apache.avro:avro:1.10.0'
+    implementation 'org.apache.avro:avro-compiler:1.10.0'
 
     implementation 'org.apache.jena:apache-jena-libs:3.16.0'
     implementation 'org.apache.jena:jena-fuseki-main:3.16.0'
@@ -58,9 +59,9 @@ sourceSets {
     main {
         java {
             srcDirs 'src/main/java'
-            srcDirs 'src/main/java'
+	    srcDirs 'src/main/avro-generated'
             srcDirs 'src/generated/main/java'
-            srcDirs 'src/generated/main/grpc/'
+            srcDirs 'src/generated/main/grpc'
         }
     }
 }
@@ -78,8 +79,6 @@ protobuf {
 //   ...
 //   generatedFilesBaseDir = "$projectDir/src/generated"
 // }
-
-
 
   protoc {
     artifact = "com.google.protobuf:protoc:3.12.0"

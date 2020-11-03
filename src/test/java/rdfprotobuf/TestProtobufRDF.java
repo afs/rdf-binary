@@ -18,10 +18,12 @@
 
 package rdfprotobuf;
 
-import riot.thrift.TRDF;
+public class TestProtobufRDF {
 
-/** See {@link TRDF} */
-public class PB_BinRDF {
 
+
+    private static void test(String input) {
+
+    }
 }
 

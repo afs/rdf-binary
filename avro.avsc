@@ -1,0 +1,51 @@
+{
+  "type" : "record",
+  "name" : "ATriple",
+  "namespace" : "org.apache.jena.riot.avro",
+  "fields" : [ {
+    "name" : "subject",
+    "type" : [ {
+      "type" : "record",
+      "name" : "TermIRI",
+      "fields" : [ {
+        "name" : "iri",
+        "type" : {
+          "type" : "enum",
+          "name" : "Kind",
+          "symbols" : [ "IRI", "PN" ]
+        }
+      }, {
+        "name" : "value",
+        "type" : "string"
+      } ]
+    }, {
+      "type" : "record",
+      "name" : "TermBlankNode",
+      "fields" : [ {
+        "name" : "label",
+        "type" : "string"
+      } ]
+    } ]
+  }, {
+    "name" : "predicate",
+    "type" : "TermIRI"
+  }, {
+    "name" : "object",
+    "type" : [ "TermIRI", "TermBlankNode", {
+      "type" : "record",
+      "name" : "TermLiteral",
+      "fields" : [ {
+        "name" : "lex",
+        "type" : "string"
+      }, {
+        "name" : "lang",
+        "type" : [ "null", "string" ],
+        "default" : null
+      }, {
+        "name" : "datatype",
+        "type" : [ "null", "TermIRI" ],
+        "default" : null
+      } ]
+    } ]
+  } ]
+}

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -16,12 +16,22 @@
  * limitations under the License.
  */
 
-package rdfprotobuf;
+package org.apache.jena.riot.thrift;
 
-import riot.thrift.TRDF;
+import org.junit.runner.RunWith ;
+import org.junit.runners.Suite ;
 
-/** See {@link TRDF} */
-public class PB_BinRDF {
+@RunWith(Suite.class)
+@Suite.SuiteClasses( {
+    TestThriftTerm.class
+    , TestThriftSetup.class
+    , TestStreamRDFThrift.class
+    , TestResultSetThrift.class
+    //, TestPatchThrift.class
+    
+} )
 
+public class TS_RDFThrift {
+    public static final String TestingDir = "testing/RIOT/RDF-Thrift" ;
 }
 
