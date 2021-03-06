@@ -3,6 +3,7 @@
 
 package org.apache.jena.riot.protobuf;
 
+@SuppressWarnings("all")
 public final class PB_RDF {
   private PB_RDF() {}
   public static void registerAllExtensions(
@@ -126,7 +127,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         iri_ = s;
@@ -142,7 +143,7 @@ public final class PB_RDF {
         getIriBytes() {
       java.lang.Object ref = iri_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         iri_ = b;
@@ -479,7 +480,7 @@ public final class PB_RDF {
           getIriBytes() {
         java.lang.Object ref = iri_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           iri_ = b;
@@ -498,7 +499,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         iri_ = value;
         onChanged();
         return this;
@@ -508,7 +509,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearIri() {
-        
+
         iri_ = getDefaultInstance().getIri();
         onChanged();
         return this;
@@ -524,7 +525,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         iri_ = value;
         onChanged();
         return this;
@@ -717,7 +718,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         prefix_ = s;
@@ -733,7 +734,7 @@ public final class PB_RDF {
         getPrefixBytes() {
       java.lang.Object ref = prefix_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         prefix_ = b;
@@ -755,7 +756,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         localName_ = s;
@@ -771,7 +772,7 @@ public final class PB_RDF {
         getLocalNameBytes() {
       java.lang.Object ref = localName_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         localName_ = b;
@@ -1129,7 +1130,7 @@ public final class PB_RDF {
           getPrefixBytes() {
         java.lang.Object ref = prefix_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           prefix_ = b;
@@ -1148,7 +1149,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         prefix_ = value;
         onChanged();
         return this;
@@ -1158,7 +1159,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearPrefix() {
-        
+
         prefix_ = getDefaultInstance().getPrefix();
         onChanged();
         return this;
@@ -1174,7 +1175,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         prefix_ = value;
         onChanged();
         return this;
@@ -1205,7 +1206,7 @@ public final class PB_RDF {
           getLocalNameBytes() {
         java.lang.Object ref = localName_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           localName_ = b;
@@ -1224,7 +1225,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         localName_ = value;
         onChanged();
         return this;
@@ -1234,7 +1235,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearLocalName() {
-        
+
         localName_ = getDefaultInstance().getLocalName();
         onChanged();
         return this;
@@ -1250,7 +1251,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         localName_ = value;
         onChanged();
         return this;
@@ -1438,7 +1439,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         label_ = s;
@@ -1460,7 +1461,7 @@ public final class PB_RDF {
         getLabelBytes() {
       java.lang.Object ref = label_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         label_ = b;
@@ -1809,7 +1810,7 @@ public final class PB_RDF {
           getLabelBytes() {
         java.lang.Object ref = label_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           label_ = b;
@@ -1834,7 +1835,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         label_ = value;
         onChanged();
         return this;
@@ -1850,7 +1851,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearLabel() {
-        
+
         label_ = getDefaultInstance().getLabel();
         onChanged();
         return this;
@@ -1872,7 +1873,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         label_ = value;
         onChanged();
         return this;
@@ -2152,7 +2153,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         lex_ = s;
@@ -2168,7 +2169,7 @@ public final class PB_RDF {
         getLexBytes() {
       java.lang.Object ref = lex_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         lex_ = b;
@@ -2191,7 +2192,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (langOrDatatypeCase_ == 2) {
@@ -2211,7 +2212,7 @@ public final class PB_RDF {
         ref = langOrDatatype_;
       }
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         if (langOrDatatypeCase_ == 2) {
@@ -2236,7 +2237,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (langOrDatatypeCase_ == 3) {
@@ -2256,7 +2257,7 @@ public final class PB_RDF {
         ref = langOrDatatype_;
       }
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         if (langOrDatatypeCase_ == 3) {
@@ -2730,7 +2731,7 @@ public final class PB_RDF {
           getLexBytes() {
         java.lang.Object ref = lex_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           lex_ = b;
@@ -2749,7 +2750,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         lex_ = value;
         onChanged();
         return this;
@@ -2759,7 +2760,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearLex() {
-        
+
         lex_ = getDefaultInstance().getLex();
         onChanged();
         return this;
@@ -2775,7 +2776,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         lex_ = value;
         onChanged();
         return this;
@@ -2815,7 +2816,7 @@ public final class PB_RDF {
           ref = langOrDatatype_;
         }
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           if (langOrDatatypeCase_ == 2) {
@@ -2904,7 +2905,7 @@ public final class PB_RDF {
           ref = langOrDatatype_;
         }
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           if (langOrDatatypeCase_ == 3) {
@@ -3082,7 +3083,7 @@ public final class PB_RDF {
        * <code>.RDF_PrefixName dtPrefix = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixNameOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixNameOrBuilder>
           getDtPrefixFieldBuilder() {
         if (dtPrefixBuilder_ == null) {
           if (!(langOrDatatypeCase_ == 4)) {
@@ -3264,7 +3265,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         name_ = s;
@@ -3280,7 +3281,7 @@ public final class PB_RDF {
         getNameBytes() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         name_ = b;
@@ -3617,7 +3618,7 @@ public final class PB_RDF {
           getNameBytes() {
         java.lang.Object ref = name_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           name_ = b;
@@ -3636,7 +3637,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         name_ = value;
         onChanged();
         return this;
@@ -3646,7 +3647,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearName() {
-        
+
         name_ = getDefaultInstance().getName();
         onChanged();
         return this;
@@ -3662,7 +3663,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         name_ = value;
         onChanged();
         return this;
@@ -6326,7 +6327,7 @@ public final class PB_RDF {
        * <code>.RDF_IRI iri = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRIOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRIOrBuilder>
           getIriFieldBuilder() {
         if (iriBuilder_ == null) {
           if (!(termCase_ == 1)) {
@@ -6467,7 +6468,7 @@ public final class PB_RDF {
        * <code>.RDF_BNode bnode = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_BNode, org.apache.jena.riot.protobuf.PB_RDF.RDF_BNode.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_BNodeOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_BNode, org.apache.jena.riot.protobuf.PB_RDF.RDF_BNode.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_BNodeOrBuilder>
           getBnodeFieldBuilder() {
         if (bnodeBuilder_ == null) {
           if (!(termCase_ == 2)) {
@@ -6608,7 +6609,7 @@ public final class PB_RDF {
        * <code>.RDF_Literal literal = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Literal, org.apache.jena.riot.protobuf.PB_RDF.RDF_Literal.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_LiteralOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Literal, org.apache.jena.riot.protobuf.PB_RDF.RDF_Literal.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_LiteralOrBuilder>
           getLiteralFieldBuilder() {
         if (literalBuilder_ == null) {
           if (!(termCase_ == 3)) {
@@ -6749,7 +6750,7 @@ public final class PB_RDF {
        * <code>.RDF_PrefixName prefixName = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixNameOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixName.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixNameOrBuilder>
           getPrefixNameFieldBuilder() {
         if (prefixNameBuilder_ == null) {
           if (!(termCase_ == 4)) {
@@ -6890,7 +6891,7 @@ public final class PB_RDF {
        * <code>.RDF_VAR variable = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_VAR, org.apache.jena.riot.protobuf.PB_RDF.RDF_VAR.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_VAROrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_VAR, org.apache.jena.riot.protobuf.PB_RDF.RDF_VAR.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_VAROrBuilder>
           getVariableFieldBuilder() {
         if (variableBuilder_ == null) {
           if (!(termCase_ == 5)) {
@@ -7031,7 +7032,7 @@ public final class PB_RDF {
        * <code>.RDF_Triple tripleTerm = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple, org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TripleOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple, org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TripleOrBuilder>
           getTripleTermFieldBuilder() {
         if (tripleTermBuilder_ == null) {
           if (!(termCase_ == 6)) {
@@ -7172,7 +7173,7 @@ public final class PB_RDF {
        * <code>.RDF_ANY any = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_ANY, org.apache.jena.riot.protobuf.PB_RDF.RDF_ANY.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_ANYOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_ANY, org.apache.jena.riot.protobuf.PB_RDF.RDF_ANY.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_ANYOrBuilder>
           getAnyFieldBuilder() {
         if (anyBuilder_ == null) {
           if (!(termCase_ == 7)) {
@@ -7313,7 +7314,7 @@ public final class PB_RDF {
        * <code>.RDF_UNDEF undefined = 8;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_UNDEF, org.apache.jena.riot.protobuf.PB_RDF.RDF_UNDEF.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_UNDEFOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_UNDEF, org.apache.jena.riot.protobuf.PB_RDF.RDF_UNDEF.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_UNDEFOrBuilder>
           getUndefinedFieldBuilder() {
         if (undefinedBuilder_ == null) {
           if (!(termCase_ == 8)) {
@@ -7454,7 +7455,7 @@ public final class PB_RDF {
        * <code>.RDF_REPEAT repeat = 9;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_REPEAT, org.apache.jena.riot.protobuf.PB_RDF.RDF_REPEAT.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_REPEATOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_REPEAT, org.apache.jena.riot.protobuf.PB_RDF.RDF_REPEAT.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_REPEATOrBuilder>
           getRepeatFieldBuilder() {
         if (repeatBuilder_ == null) {
           if (!(termCase_ == 9)) {
@@ -8229,7 +8230,7 @@ public final class PB_RDF {
        * <code>.RDF_Term S = 1;</code>
        */
       public org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder getSBuilder() {
-        
+
         onChanged();
         return getSFieldBuilder().getBuilder();
       }
@@ -8248,7 +8249,7 @@ public final class PB_RDF {
        * <code>.RDF_Term S = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder>
           getSFieldBuilder() {
         if (sBuilder_ == null) {
           sBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -8348,7 +8349,7 @@ public final class PB_RDF {
        * <code>.RDF_Term P = 2;</code>
        */
       public org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder getPBuilder() {
-        
+
         onChanged();
         return getPFieldBuilder().getBuilder();
       }
@@ -8367,7 +8368,7 @@ public final class PB_RDF {
        * <code>.RDF_Term P = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder>
           getPFieldBuilder() {
         if (pBuilder_ == null) {
           pBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -8467,7 +8468,7 @@ public final class PB_RDF {
        * <code>.RDF_Term O = 3;</code>
        */
       public org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder getOBuilder() {
-        
+
         onChanged();
         return getOFieldBuilder().getBuilder();
       }
@@ -8486,7 +8487,7 @@ public final class PB_RDF {
        * <code>.RDF_Term O = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder>
           getOFieldBuilder() {
         if (oBuilder_ == null) {
           oBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -9340,7 +9341,7 @@ public final class PB_RDF {
        * <code>.RDF_Term S = 1;</code>
        */
       public org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder getSBuilder() {
-        
+
         onChanged();
         return getSFieldBuilder().getBuilder();
       }
@@ -9359,7 +9360,7 @@ public final class PB_RDF {
        * <code>.RDF_Term S = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder>
           getSFieldBuilder() {
         if (sBuilder_ == null) {
           sBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -9459,7 +9460,7 @@ public final class PB_RDF {
        * <code>.RDF_Term P = 2;</code>
        */
       public org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder getPBuilder() {
-        
+
         onChanged();
         return getPFieldBuilder().getBuilder();
       }
@@ -9478,7 +9479,7 @@ public final class PB_RDF {
        * <code>.RDF_Term P = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder>
           getPFieldBuilder() {
         if (pBuilder_ == null) {
           pBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -9578,7 +9579,7 @@ public final class PB_RDF {
        * <code>.RDF_Term O = 3;</code>
        */
       public org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder getOBuilder() {
-        
+
         onChanged();
         return getOFieldBuilder().getBuilder();
       }
@@ -9597,7 +9598,7 @@ public final class PB_RDF {
        * <code>.RDF_Term O = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder>
           getOFieldBuilder() {
         if (oBuilder_ == null) {
           oBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -9697,7 +9698,7 @@ public final class PB_RDF {
        * <code>.RDF_Term G = 4;</code>
        */
       public org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder getGBuilder() {
-        
+
         onChanged();
         return getGFieldBuilder().getBuilder();
       }
@@ -9716,7 +9717,7 @@ public final class PB_RDF {
        * <code>.RDF_Term G = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Term, org.apache.jena.riot.protobuf.PB_RDF.RDF_Term.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TermOrBuilder>
           getGFieldBuilder() {
         if (gBuilder_ == null) {
           gBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -9916,7 +9917,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         prefix_ = s;
@@ -9932,7 +9933,7 @@ public final class PB_RDF {
         getPrefixBytes() {
       java.lang.Object ref = prefix_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         prefix_ = b;
@@ -9954,7 +9955,7 @@ public final class PB_RDF {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         uri_ = s;
@@ -9970,7 +9971,7 @@ public final class PB_RDF {
         getUriBytes() {
       java.lang.Object ref = uri_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         uri_ = b;
@@ -10328,7 +10329,7 @@ public final class PB_RDF {
           getPrefixBytes() {
         java.lang.Object ref = prefix_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           prefix_ = b;
@@ -10347,7 +10348,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         prefix_ = value;
         onChanged();
         return this;
@@ -10357,7 +10358,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearPrefix() {
-        
+
         prefix_ = getDefaultInstance().getPrefix();
         onChanged();
         return this;
@@ -10373,7 +10374,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         prefix_ = value;
         onChanged();
         return this;
@@ -10404,7 +10405,7 @@ public final class PB_RDF {
           getUriBytes() {
         java.lang.Object ref = uri_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           uri_ = b;
@@ -10423,7 +10424,7 @@ public final class PB_RDF {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+
         uri_ = value;
         onChanged();
         return this;
@@ -10433,7 +10434,7 @@ public final class PB_RDF {
        * @return This builder for chaining.
        */
       public Builder clearUri() {
-        
+
         uri_ = getDefaultInstance().getUri();
         onChanged();
         return this;
@@ -10449,7 +10450,7 @@ public final class PB_RDF {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+
         uri_ = value;
         onChanged();
         return this;
@@ -11427,7 +11428,7 @@ public final class PB_RDF {
        * <code>.RDF_PrefixDecl prefixDecl = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixDecl, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixDecl.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixDeclOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixDecl, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixDecl.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixDeclOrBuilder>
           getPrefixDeclFieldBuilder() {
         if (prefixDeclBuilder_ == null) {
           if (!(rowCase_ == 1)) {
@@ -11568,7 +11569,7 @@ public final class PB_RDF {
        * <code>.RDF_Triple triple = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple, org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TripleOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple, org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_TripleOrBuilder>
           getTripleFieldBuilder() {
         if (tripleBuilder_ == null) {
           if (!(rowCase_ == 2)) {
@@ -11709,7 +11710,7 @@ public final class PB_RDF {
        * <code>.RDF_Quad quad = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_Quad, org.apache.jena.riot.protobuf.PB_RDF.RDF_Quad.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_QuadOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_Quad, org.apache.jena.riot.protobuf.PB_RDF.RDF_Quad.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_QuadOrBuilder>
           getQuadFieldBuilder() {
         if (quadBuilder_ == null) {
           if (!(rowCase_ == 3)) {
@@ -11850,7 +11851,7 @@ public final class PB_RDF {
        * <code>.RDF_IRI base = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRIOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_IRIOrBuilder>
           getBaseFieldBuilder() {
         if (baseBuilder_ == null) {
           if (!(rowCase_ == 4)) {
@@ -11927,7 +11928,7 @@ public final class PB_RDF {
     /**
      * <code>repeated .RDF_StreamRow row = 1;</code>
      */
-    java.util.List<org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow> 
+    java.util.List<org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow>
         getRowList();
     /**
      * <code>repeated .RDF_StreamRow row = 1;</code>
@@ -11940,7 +11941,7 @@ public final class PB_RDF {
     /**
      * <code>repeated .RDF_StreamRow row = 1;</code>
      */
-    java.util.List<? extends org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder> 
+    java.util.List<? extends org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder>
         getRowOrBuilderList();
     /**
      * <code>repeated .RDF_StreamRow row = 1;</code>
@@ -12052,7 +12053,7 @@ public final class PB_RDF {
      * <code>repeated .RDF_StreamRow row = 1;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder> 
+    public java.util.List<? extends org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder>
         getRowOrBuilderList() {
       return row_;
     }
@@ -12383,7 +12384,7 @@ public final class PB_RDF {
               rowBuilder_ = null;
               row_ = other.row_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              rowBuilder_ = 
+              rowBuilder_ =
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getRowFieldBuilder() : null;
             } else {
@@ -12616,7 +12617,7 @@ public final class PB_RDF {
       /**
        * <code>repeated .RDF_StreamRow row = 1;</code>
        */
-      public java.util.List<? extends org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder> 
+      public java.util.List<? extends org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder>
            getRowOrBuilderList() {
         if (rowBuilder_ != null) {
           return rowBuilder_.getMessageOrBuilderList();
@@ -12642,12 +12643,12 @@ public final class PB_RDF {
       /**
        * <code>repeated .RDF_StreamRow row = 1;</code>
        */
-      public java.util.List<org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow.Builder> 
+      public java.util.List<org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow.Builder>
            getRowBuilderList() {
         return getRowFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow, org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder> 
+          org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow, org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRow.Builder, org.apache.jena.riot.protobuf.PB_RDF.RDF_StreamRowOrBuilder>
           getRowFieldBuilder() {
         if (rowBuilder_ == null) {
           rowBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
@@ -12715,72 +12716,72 @@ public final class PB_RDF {
 
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_IRI_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_IRI_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_PrefixName_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_PrefixName_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_BNode_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_BNode_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_Literal_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_Literal_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_VAR_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_VAR_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_ANY_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_ANY_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_UNDEF_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_UNDEF_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_REPEAT_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_REPEAT_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_Term_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_Term_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_Triple_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_Triple_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_Quad_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_Quad_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_PrefixDecl_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_PrefixDecl_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_StreamRow_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_StreamRow_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RDF_Stream_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RDF_Stream_fieldAccessorTable;
 

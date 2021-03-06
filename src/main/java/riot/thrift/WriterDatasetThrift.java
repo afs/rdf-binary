@@ -27,10 +27,10 @@ import org.apache.jena.riot.Lang ;
 import org.apache.jena.riot.RDFFormat ;
 import org.apache.jena.riot.WriterDatasetRIOT ;
 import org.apache.jena.riot.system.PrefixMap ;
+import org.apache.jena.riot.system.StreamRDF ;
 import org.apache.jena.riot.system.StreamRDFOps ;
 import org.apache.jena.riot.thrift.BinRDF;
 import org.apache.jena.riot.thrift.RiotThriftException;
-import org.apache.jena.riot.system.StreamRDF ;
 import org.apache.jena.sparql.core.DatasetGraph ;
 import org.apache.jena.sparql.util.Context ;
 

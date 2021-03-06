@@ -19,14 +19,14 @@ dependencies {
     implementation 'org.apache.avro:avro:1.10.0'
     implementation 'org.apache.avro:avro-compiler:1.10.0'
 
-    implementation 'org.apache.jena:apache-jena-libs:3.16.0'
-    implementation 'org.apache.jena:jena-fuseki-main:3.16.0'
+    implementation 'org.apache.jena:apache-jena-libs:3.17.0'
+    implementation 'org.apache.jena:jena-fuseki-main:3.17.0'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
     // gRPC uses JUL
     implementation 'org.apache.logging.log4j:log4j-jul:2.13.3'
     implementation 'org.slf4j:slf4j-api:1.7.30'
     testImplementation 'junit:junit:4.13.1'
-    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+//    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
     //classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.13'
 }
 

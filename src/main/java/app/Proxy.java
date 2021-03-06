@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package app;
 
 import static java.lang.String.format;
@@ -49,15 +31,19 @@ import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.atlas.logging.Log;
+import org.apache.jena.atlas.web.HttpException;
 import org.apache.jena.fuseki.main.FusekiServer;
 import org.apache.jena.fuseki.main.JettyServer;
 import org.apache.jena.fuseki.system.FusekiLogging;
+import org.apache.jena.query.QueryException;
+import org.apache.jena.query.QueryParseException;
 import org.apache.jena.query.ResultSetFormatter;
-import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.rdfconnection.RDFConnectionFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.WebContent;
+import org.apache.jena.riot.web.HttpNames;
 import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.apache.jena.sparql.engine.http.QueryExceptionHTTP;
 import org.apache.jena.web.HttpSC;
@@ -90,16 +76,17 @@ public class Proxy {
 
     public static String PROXY_URL = endpoint("localhost", portProxy, PROXY);
     public static String FUSEKI_URL = endpoint("localhost", portFuseki, "");
-    public static String FUSEKI_DS = FUSEKI_URL+DS_NAME;
+    public static String FUSEKI_PROXIED = PROXY_URL+"/"+SERVICE+DS_NAME;
+    //public static String FUSEKI_DS = FUSEKI_URL+DS_NAME;
 
     // Header names used for GRPC. These are chosen to be distinct from all possible HTTP header names.
-    public static String G_SERVICE      = "$servuice";
+    public static String G_SERVICE      = "$service";
     public static String G_REQUEST      = "$request";
     public static String G_METHOD       = "$method";
     public static String G_QUERYSTRING  = "$querystring" ;
 
     // Map service name to proxied endpoint.
-    public static Map<String, String> serviceRegistry = Map.of("fuseki", "localhost:"+portFuseki);
+    public static Map<String, String> serviceRegistry = Map.of("fuseki", "http://localhost:"+portFuseki);
 
     // HTTP headers not to copy
     static Set<String> excludeRequestHeaders  = Set.of("Host", "Connection", "Content-Length");
@@ -119,15 +106,15 @@ public class Proxy {
 
     public static void setupServers() throws IOException {
         // -- Jetty server as HTTP proxy relay
-        String pathSpec = PROXY.isEmpty() ? "/*" : "/"+PROXY+"/*";
-        JettyServer jettyServer = JettyServer.create()
+        var pathSpec = PROXY.isEmpty() ? "/*" : "/"+PROXY+"/*";
+        var jettyServer = JettyServer.create()
             .port(portProxy)
             .addServlet(pathSpec, new ProxyServlet())
             .build();
         jettyServer.start();
 
         // -- GRPC Server : provides a GRPC call to make a HTTP request and return the response
-        io.grpc.Server grpcServer = ServerBuilder.forPort(portGRPC).addService(new ProxyService()).build();
+        var grpcServer = ServerBuilder.forPort(portGRPC).addService(new ProxyService()).build();
         grpcServer.start();
 
         // -- Fuseki database server
@@ -142,33 +129,43 @@ public class Proxy {
     }
 
     public static void dwim() {
-        // Use the setup.
-        // SPARQL update;  SPARQL query then SPARQL GSP get()
-        try ( RDFConnection conn = RDFConnectionFactory.connect(FUSEKI_DS) ) {
+        try ( RDFConnection conn = RDFConnectionFactory.connect(FUSEKI_PROXIED) ) {
             // SPARQL update
-            conn.update("INSERT DATA { <x:s> <x:p> 123 }");
-
+            try {
+                conn.update("INSERT DATA { <x:s> <x:p> 123 }");
+            } catch (QueryException | HttpException ex) {
+                Log.info(Proxy.class, "Update error: "+ex.getMessage());
+            }
             // SPARQL query
             conn.queryResultSet("SELECT * { ?s ?p ?o }", rs->ResultSetFormatter.out(rs));
 
             // SPARQL GSP
-            Model model = conn.fetch();
+            var model = conn.fetch();
             RDFDataMgr.write(System.out, model,  Lang.NT);
+
         }
         // ----
         System.out.println();
+
         // Bad things.
-        try ( RDFConnection conn = RDFConnectionFactory.connect(FUSEKI_DS+"X") ) {
-            conn.queryAsk("ASK{}");
-        } catch (QueryExceptionHTTP ex) {
-            Log.info(Proxy.class, "Got: "+ex.getStatusCode());
+        try ( RDFConnection conn = RDFConnectionFactory.connect(FUSEKI_PROXIED) ) {
+            conn.queryAsk("BAD REQUEST");
+        } catch (QueryParseException ex) {
+            Log.info(Proxy.class, "Parse error: "+ex.getMessage());
         }
 
         // Bad things.
-        try ( RDFConnection conn = RDFConnectionFactory.connect("http://localhost:2020/proxy/joseki/ds") ) {
+        try ( RDFConnection conn = RDFConnectionFactory.connect(FUSEKI_PROXIED+"X") ) {
             conn.queryAsk("ASK{}");
         } catch (QueryExceptionHTTP ex) {
-            Log.info(Proxy.class, "Got: "+ex.getStatusCode());
+            Log.info(Proxy.class, "[Expect 404] Got: "+ex.getStatusCode());
+        }
+
+        // Bad things.
+        try ( var conn = RDFConnectionFactory.connect("http://localhost:2020/proxy/joseki/ds") ) {
+            conn.queryAsk("ASK{}");
+        } catch (QueryExceptionHTTP ex) {
+            Log.info(Proxy.class, "[Expect 400] Got: "+ex.getStatusCode());
         }
     }
 
@@ -183,7 +180,8 @@ public class Proxy {
      */
     static class ProxyServlet extends HttpServlet {
         // Regex for proxy+service+request
-        private static Pattern serviceRegex = Pattern.compile("/([^/]*)/([^/])/(.*)");
+        // Includes leading "/" for the request.
+        private static Pattern serviceRegex = Pattern.compile("/([^/]+)/([^/]+)(/.*)");
 
         // Map GET and POST
         @Override
@@ -192,7 +190,7 @@ public class Proxy {
         protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException { proxy(req, res); }
 
         private void proxy(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
-            // Extract HTTP reuest details.
+            // Extract HTTP request details.
             String host = httpRequest.getHeader("Host");
             String method = httpRequest.getMethod();
             // getRequestURI - the HTTP request line path. (c.f. getRequestURL)
@@ -208,7 +206,19 @@ public class Proxy {
             String serviceName = matcher.group(2);
             String serviceRequest = matcher.group(3);
 
-            // ** Do any checking here **
+            // ** Do any checking here
+            // ** JWT in request
+            // query vs update ; GSP-R vs GSP-W
+
+            if ( false ) {
+                boolean isQuery = HttpNames.METHOD_GET.equals(method) ||
+                                  WebContent.contentTypeSPARQLQuery.equals(httpRequest.getContentType()) ;
+                if ( ! isQuery ) {
+                    Log.warn(this, "Reject non-query");
+                    httpResponse.sendError(HttpSC.BAD_REQUEST_400);
+                    return ;
+                }
+            }
 
             // Build GRPC request message
             Map<String, String> httpHeaders = new HashMap<>();
@@ -247,8 +257,11 @@ public class Proxy {
             // Make call.
             GrpcHttpResponse grpcResponse = blockingStub.http(grpcRequest);
 
+            //grpcResponse.getHeadersMap().forEach((k,v)->System.out.printf("RS: k=%s, v=%s\n",k,v));
+
             // Unpack GRPC response, convert to HTTP response, return response.
             grpcResponse.getHeadersMap().forEach((k,v)->httpResponse.setHeader(k,v));
+
             httpResponse.setStatus(grpcResponse.getStatusCode());
             try ( OutputStream reponseBody = httpResponse.getOutputStream() ) {
                 reponseBody.write(grpcResponse.getBody().getValue().toByteArray());
@@ -292,9 +305,10 @@ public class Proxy {
             // HTTP request
             HttpRequest.Builder builder = HttpRequest.newBuilder().uri(URI.create(url));
             grpcRequest.getHeadersMap().forEach((k,v)->{
-                if ( excludeResponseHeaders.contains(k) ) return;
-                // Content-Length is restricted.
-                builder.setHeader(k,v);
+                //System.out.printf("RQ: k=%s v=%s\n", k, v);
+                if ( ! excludeRequestHeaders.contains(k) )
+                    // Content-Length is restricted.
+                    builder.setHeader(k,v);
             });
 
             switch(method) {
@@ -350,7 +364,7 @@ public class Proxy {
     // Utility : Filter and copy headers from an HTTP request into a GRPC headers map.
     static void copyHeaders(HttpServletRequest request, Map<String, String> httpHeaders) {
         Iter.iter(request.getHeaderNames().asIterator())
-            .filter(h->excludeRequestHeaders.contains(h))
+            .filter(h->!excludeRequestHeaders.contains(h))
             .forEach(h->httpHeaders.put(h, request.getHeader(h)));
     }
 
@@ -359,7 +373,7 @@ public class Proxy {
         // Copy headers from an HTTP response into GRPC headers map.
         Map<String, List<String>> map = response.headers().map();
         map.keySet().stream()
-            .filter(h->excludeResponseHeaders.contains(h))
+            .filter(h->!excludeResponseHeaders.contains(h))
             .forEach(h->httpHeaders.put(h, map.get(h).get(0)));
     }
 }
