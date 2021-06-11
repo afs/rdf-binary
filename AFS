@@ -1,21 +1,33 @@
+gradle: Java17 not supported (!!)
+
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+
+== Protobuf:
+gradle generateProto
+OR
+protoc --proto_path=src/main/proto/ --java_out=src/generated/main/java/ binary-rdf.proto
+
+== Avro:
+mvn generate-source
+
+
+--
+
 protoc --proto_path=. --java_out=src/main/java/ example2.proto 
 protoc --proto_path=. --java_out=src/main/java/ example3.proto
 
 protoc --proto_path=. --java_out=src/generated/main/java service3.proto
 
 
-  gradle generateProto
 
 ----
 https://github.com/grpc/grpc-java/blob/master/examples/pom.xml
-
-
 ----
 
 https://www.weave.works/blog/turtles-way-http-grpc/
 
 
-<plugin>
+      <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
         <version>1.10.0</version>

@@ -28,7 +28,7 @@
   <packaging>jar</packaging>
   
   <properties>
-    <ver.jena>4.0.0-SNAPSHOT</ver.jena>
+    <ver.jena>4.1.0</ver.jena>
     <ver.fuseki>${ver.jena}</ver.fuseki>
     <ver.slf4j>1.7.30</ver.slf4j>
     <ver.log4j2>2.13.3</ver.log4j2>
@@ -37,7 +37,7 @@
     <ver.protobuf>3.13.0</ver.protobuf>
     <ver.grpc>1.33.0</ver.grpc>
 
-    <ver.avro>1.10.0</ver.avro>
+    <ver.avro>1.10.2</ver.avro>
 
   </properties>
 
@@ -204,6 +204,10 @@
         </executions>
       </plugin>
 
+      <!-- Protobuf -->
+      <!-- Run protoc -->
+
+      <!-- Avro -->
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>

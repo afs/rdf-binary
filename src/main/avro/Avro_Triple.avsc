@@ -13,7 +13,7 @@
           "name" : "iri",
           "type" : {
             "type" : "enum",
-            "name" : "kind",
+            "name" : "Kind",
             "symbols" : [ "IRI", "PN" ]
           }
         }, {
