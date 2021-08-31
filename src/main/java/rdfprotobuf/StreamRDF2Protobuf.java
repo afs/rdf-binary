@@ -18,122 +18,105 @@
 
 package rdfprotobuf;
 
-/** Encode StreamRDF in Thrift.
- *  Usually used via {@link PB_BinRDF} functions.
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.function.Consumer;
+
+import org.apache.jena.atlas.io.IO;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.riot.protobuf.PB_RDF.*;
+import org.apache.jena.riot.system.PrefixMap;
+import org.apache.jena.riot.system.PrefixMapFactory;
+import org.apache.jena.riot.system.StreamRDF;
+import org.apache.jena.sparql.core.Quad;
+
+/** Encode StreamRDF in RDF_StreamRow and send to a handler.
  *
- * @see Protobuf2StreamRDF (for each RDF_StreamRow) for the reverse process.
+ * @see Protobuf2StreamRDF for the reverse process.
  */
-public class StreamRDF2Protobuf //implements StreamRDF, AutoCloseable
+public class StreamRDF2Protobuf implements StreamRDF, AutoCloseable
 {
-//    // No REPEAT support.
-//    private final OutputStream out;
-//    private final TProtocol protocol;
-//    private PrefixMap pmap = PrefixMapFactory.create();
-//    private final boolean encodeValues;
-//
-//    public StreamRDF2Protobuf(OutputStream out) {
-//        this(out, false);
-//    }
-//
-//    public StreamRDF2Protobuf(OutputStream out, boolean encodeValues) {
-//        this.out = out;
-//        this.pmap = PrefixMapFactory.create();
-//        this.encodeValues = encodeValues;
-//    }
-//
-//    @Override
-//    public void start() { }
-//
-//    private final RDF_StreamRow  tStreamRow   = new RDF_StreamRow();
-//
-//    private final RDF_Triple ttriple    = new RDF_Triple();
-//    private final RDF_Quad   tquad      = new RDF_Quad();
-//
-//    private final RDF_Term   tsubject   = new RDF_Term();
-//    private final RDF_Term   tpredicate = new RDF_Term();
-//    private final RDF_Term   tobject    = new RDF_Term();
-//    private final RDF_Term   tgraph     = new RDF_Term();
-//
-//    @Override
-//    public void triple(Triple triple) {
-//        doTriple(triple.getSubject(), triple.getPredicate(), triple.getObject());
-//    }
-//
-//    private void doTriple(Node subject, Node predicate, Node object) {
-//        ProtobufConvert.toProtobuf(subject, pmap, tsubject, encodeValues);
-//        ProtobufConvert.toProtobuf(predicate, pmap, tpredicate, encodeValues);
-//        ProtobufConvert.toProtobuf(object, pmap, tobject, encodeValues);
-//        ttriple.setS(tsubject);
-//        ttriple.setP(tpredicate);
-//        ttriple.setO(tobject);
-//
-//        tStreamRow.setTriple(ttriple);
-//        try { tStreamRow.write(protocol); }
-//        catch (TException e) { TRDF.exception(e); }
-//        finally {
-//            tStreamRow.clear();
-//            ttriple.clear();
-//            tsubject.clear();
-//            tpredicate.clear();
-//            tobject.clear();
-//        }
-//    }
-//
-//    @Override
-//    public void quad(Quad quad) {
-//        if ( quad.getGraph() == null || quad.isDefaultGraph() ) {
-//            doTriple(quad.getSubject(), quad.getPredicate(), quad.getObject());
-//            return;
-//        }
-//
-//        ProtobufConvert.toProtobuf(quad.getGraph(), pmap, tgraph, encodeValues);
-//        ProtobufConvert.toProtobuf(quad.getSubject(), pmap, tsubject, encodeValues);
-//        ProtobufConvert.toProtobuf(quad.getPredicate(), pmap, tpredicate, encodeValues);
-//        ProtobufConvert.toProtobuf(quad.getObject(), pmap, tobject, encodeValues);
-//
-//        tquad.setG(tgraph);
-//        tquad.setS(tsubject);
-//        tquad.setP(tpredicate);
-//        tquad.setO(tobject);
-//        tStreamRow.setQuad(tquad);
-//
-//        try { tStreamRow.write(protocol); }
-//        catch (TException e) { TRDF.exception(e); }
-//        finally {
-//            tStreamRow.clear();
-//            tquad.clear();
-//            tgraph.clear();
-//            tsubject.clear();
-//            tpredicate.clear();
-//            tobject.clear();
-//        }
-//    }
-//
-//    @Override
-//    public void base(String base) {
-//        // Ignore.
-//    }
-//
-//    @Override
-//    public void prefix(String prefix, String iri) {
-//        try { pmap.add(prefix, iri); }
-//        catch ( RiotException ex) {
-//            Log.warn(this, "Prefix mapping error", ex);
-//        }
-//        RDF_PrefixDecl tprefix = new RDF_PrefixDecl(prefix, iri);
-//        tStreamRow.setPrefixDecl(tprefix);
-//        try { tStreamRow.write(protocol); }
-//        catch (TException e) { TRDF.exception(e); }
-//        tStreamRow.clear();
-//    }
-//
-//    @Override
-//    public void close() {
-//        finish();
-//    }
-//
-//    @Override
-//    public void finish() {
-//        TRDF.flush(protocol);
-//    }
+    // No REPEAT support.
+
+   // OutputStream + delimited.
+    private PrefixMap pmap = PrefixMapFactory.create();
+    private final boolean encodeValues;
+    private final Consumer<RDF_StreamRow> rowHandler;
+
+    public static StreamRDF createDelimited(OutputStream outputStream) {
+        Consumer<RDF_StreamRow> output = sr->PB.writeDelimitedTo(sr, outputStream);
+        return new StreamRDF2Protobuf(output, false);
+    }
+
+    public static void writeBlk(OutputStream outputStream, Consumer<StreamRDF> streamer ) {
+        RDF_Stream.Builder builder = RDF_Stream.newBuilder();
+        Consumer<RDF_StreamRow> output = sr->builder.addRow(sr);
+        StreamRDF2Protobuf processor = new StreamRDF2Protobuf(output, false);
+        streamer.accept(processor);
+        RDF_Stream pbStream = builder.build();
+        try {
+            pbStream.writeTo(outputStream);
+        } catch (IOException ex) { IO.exception(ex); }
+    }
+
+
+    private StreamRDF2Protobuf(Consumer<RDF_StreamRow> rowHandler, boolean encodeValues) {
+        this.pmap = PrefixMapFactory.create();
+        this.encodeValues = encodeValues;
+        this.rowHandler = rowHandler;
+    }
+
+    private RDF_StreamRow.Builder streamRowBuilder = RDF_StreamRow.newBuilder();
+    private RDF_Triple.Builder tripleBuilder = RDF_Triple.newBuilder();
+    private RDF_Quad.Builder quadBuilder = RDF_Quad.newBuilder();
+    private RDF_PrefixDecl.Builder prefixBuilder = RDF_PrefixDecl.newBuilder();
+    private RDF_IRI.Builder baseBuilder = RDF_IRI.newBuilder();
+    private RDF_Term.Builder termBuilder = RDF_Term.newBuilder();
+
+    @Override
+    public void start() {}
+
+    @Override
+    public void finish() { }
+
+    @Override
+    public void close() {
+        finish();
+    }
+
+
+    @Override
+    public void base(String base) {
+        streamRowBuilder.clear();
+        baseBuilder.clear();
+        baseBuilder.setIri(base);
+        streamRowBuilder.setBase(baseBuilder.build());
+        rowHandler.accept(streamRowBuilder.build());
+    }
+
+    @Override
+    public void prefix(String prefix, String iri) {
+        streamRowBuilder.clear();
+        prefixBuilder.clear();
+        prefixBuilder.setPrefix(prefix);
+        prefixBuilder.setUri(iri);
+        streamRowBuilder.setPrefixDecl(prefixBuilder.build());
+        rowHandler.accept(streamRowBuilder.build());
+    }
+
+    @Override
+    public void triple(Triple triple) {
+        streamRowBuilder.clear();
+        RDF_Triple triplePB = PB.rdfTriple(triple, tripleBuilder, termBuilder);
+        streamRowBuilder.setTriple(triplePB);
+        rowHandler.accept(streamRowBuilder.build());
+    }
+
+    @Override
+    public void quad(Quad quad) {
+        streamRowBuilder.clear();
+        RDF_Quad quadPB = PB.rdfQuad(quad, quadBuilder, termBuilder);
+        streamRowBuilder.setQuad(quadPB);
+        rowHandler.accept(streamRowBuilder.build());
+    }
 }

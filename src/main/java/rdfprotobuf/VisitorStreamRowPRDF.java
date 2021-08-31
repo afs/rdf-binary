@@ -18,13 +18,18 @@
 
 package rdfprotobuf;
 
+import org.apache.jena.riot.protobuf.PB_RDF.RDF_IRI;
 import org.apache.jena.riot.protobuf.PB_RDF.RDF_PrefixDecl;
 import org.apache.jena.riot.protobuf.PB_RDF.RDF_Quad;
 import org.apache.jena.riot.protobuf.PB_RDF.RDF_Triple;
 
 /** Visitor for RDF_StreamRow */
 public interface VisitorStreamRowPRDF {
-    public void visit(RDF_Triple triple) ;
-    public void visit(RDF_Quad quad) ;
-    public void visit(RDF_PrefixDecl prefix) ;
+    public void visit(RDF_Triple triple);
+
+    public void visit(RDF_Quad quad);
+
+    public void visit(RDF_IRI base);
+
+    public void visit(RDF_PrefixDecl prefix);
 }

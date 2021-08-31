@@ -1,15 +1,21 @@
+
+
+== Protobuf:
+CLI:
+protoc --proto_path=src/main/proto/ --java_out=src/generated/main/java/ binary-rdf.proto
+
+Python:
+protoc --proto_path=src/main/proto/ --python_out=python-pb binary-rdf.proto
+
+
 gradle: Java17 not supported (!!)
 
 JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 
-== Protobuf:
 gradle generateProto
-OR
-protoc --proto_path=src/main/proto/ --java_out=src/generated/main/java/ binary-rdf.proto
 
 == Avro:
 mvn generate-source
-
 
 --
 
@@ -25,6 +31,29 @@ https://github.com/grpc/grpc-java/blob/master/examples/pom.xml
 ----
 
 https://www.weave.works/blog/turtles-way-http-grpc/
+
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${ver.avro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${ver.avro}</version>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+      <version>${ver.avro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+      <version>${ver.avro}</version>
+      <classifier>sources</classifier>
+    </dependency>
 
 
       <plugin>

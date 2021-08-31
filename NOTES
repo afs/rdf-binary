@@ -1,0 +1,12 @@
+Ne encoidng.
+
+protobuf default value of a string is "", not null.
+Can use StringValue
+
+Or enum of literal kind.
+Or lex
++datatype
++lang
++prefix
+
+

@@ -1,0 +1,28 @@
+#!/bin/bash
+## Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0
+
+## if [ "$#" != 1 ]
+## then
+##     echo "Usage: $(basename $0) FILE" 2>&1
+##     exit 1
+## fi
+
+PROTO="${1:-binary-rdf.proto}"
+
+# Find the namespace
+PKG=src/main/generated/
+PKG="$PKG/org/apache/jena/riot/protobuf/"
+rm -f "$PKG"/*.java
+
+protoc --proto_path=src/main/proto/ \
+       --java_out=src/main/generated/ \
+       src/main/proto/"$PROTO"
+
+F=$PKG/PB_RDF.java
+
+if [ -e "$F" ]
+then
+    perl -i -p -e \
+	 's/^public final class/\@SuppressWarnings("all")\npublic final class/' \
+	 $F
+fi

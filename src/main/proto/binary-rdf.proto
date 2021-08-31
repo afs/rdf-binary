@@ -21,17 +21,10 @@
 
 // Protobuf messages are not self-delimiting so we need "containers" like RDF_Graph
 
-// c.f. Apache Thrift, items are delimiting and we can simply concatentate 
-// jena-arq/Grammar/BinaryRDF.trift 
-//  https://github.com/apache/jena/blob/master/jena-arq/Grammar/BinaryRDF.thrift
-//  https://gitbox.apache.org/repos/asf?p=jena.git;a=blob;f=jena-arq/Grammar/BinaryRDF.thrift;h=458d6ca60f959b00a6f244193b057e729d60c52a;hb=HEAD
 syntax = "proto3";
 
 option java_package         = "org.apache.jena.riot.protobuf" ;
 option java_outer_classname = "PB_RDF" ;
-
-// enum
-// oneof
 
 // ==== RDF Term Definitions 
 
@@ -47,9 +40,7 @@ message RDF_PrefixName {
 
 message RDF_BNode {
   string label = 1 ;
-  // Maybe support a pair of longs
-//  int64 mostSig = 2 ;
-//  int64 leastSig = 3 ;
+  // 2 * fixed64
 } 
 
 // Common abbreviations for datatypes and other URIs?
@@ -57,19 +48,20 @@ message RDF_BNode {
 
 message RDF_Literal {
   string lex = 1 ;
-  oneof langOrDatatype{ 
+  oneof literalKind {
+    bool simple = 9 ;
     string langtag = 2 ;
     string datatype = 3 ;
     RDF_PrefixName dtPrefix = 4 ;
   }
 }
 
-// struct RDF_Decimal {
-// 1: required i64  value ;
-// 2: required i32  scale ;
-// }
+message RDF_Decimal {
+  sint64  value = 1 ;
+  sint32  scale = 2 ;
+}
 
-message RDF_VAR {
+message RDF_Var {
   string name = 1 ;
 }
 
@@ -79,27 +71,24 @@ message RDF_UNDEF { }
 
 message RDF_REPEAT { }
 
-// protobuf oneof
-
 message RDF_Term {
   oneof term {
     RDF_IRI        iri        = 1 ;
     RDF_BNode      bnode      = 2 ;
     RDF_Literal    literal    = 3 ;
     RDF_PrefixName prefixName = 4 ;
-    RDF_VAR        variable   = 5 ;
+    RDF_Var        variable   = 5 ;
     RDF_Triple     tripleTerm = 6 ;
     RDF_ANY        any        = 7 ;
     RDF_UNDEF      undefined  = 8 ;
     RDF_REPEAT     repeat     = 9 ;
+    
+    // Value forms of literals.
+    sint64         valInteger = 20 ;
+    double         valDouble  = 21 ;
+    RDF_Decimal    valDecimal = 22 ;
   }
 }
-
-// oneof for a literal - add:
-// # Value forms of literals.
-// int64           valInteger
-// double          valDouble
-// RDF_Decimal     valDecimal
 
 // === StreamRDF items 
 
@@ -124,11 +113,11 @@ message RDF_PrefixDecl {
 
 // StreamRDF
 message RDF_StreamRow {
-  oneof row  {
-	RDF_PrefixDecl   prefixDecl  = 1 ;
-	RDF_Triple       triple      = 2 ;
-	RDF_Quad         quad        = 3 ;
-	RDF_IRI          base        = 4 ;
+  oneof row {
+  	RDF_PrefixDecl   prefixDecl  = 1 ;
+	  RDF_Triple       triple      = 2 ;
+  	RDF_Quad         quad        = 3 ;
+	  RDF_IRI          base        = 4 ;
   }
 }
 
@@ -138,15 +127,21 @@ message RDF_Stream {
 
 // ==== SPARQL Result Sets
 
-// struct RDF_VarTuple {
-// 1: list<RDF_VAR> vars
-// }
-// 
-// struct RDF_DataTuple {
-// 1: list<RDF_Term> row
-// }
+message RDF_VarTuple {
+  repeated RDF_Var vars = 1 ;
+}
 
-// // ==== RDF Patch
+message RDF_DataTuple {
+  repeated RDF_Term row = 1 ;
+}
+
+// ==== RDF Graph
+
+message RDF_Graph {
+  repeated RDF_Triple triple = 1 ;
+}
+
+// ==== RDF Patch
 // 
 // # Includes 
 // # Prefix declaration

@@ -37,6 +37,8 @@
     <ver.protobuf>3.17.3</ver.protobuf>
     <ver.grpc>1.40.1</ver.grpc>
 
+    <ver.avro>1.10.2</ver.avro>
+
   </properties>
 
   <dependencies>
@@ -55,7 +57,7 @@
     </dependency>
     -->
 
-    <!-- gRPC including protobuf -->
+    <!-- gRPC inbcluding protobuf -->
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-netty-shaded</artifactId>
@@ -71,13 +73,35 @@
       <artifactId>grpc-stub</artifactId>
       <version>${ver.grpc}</version>
     </dependency>
-    
-    <!-- necessary for Java 9+ -->
-    <dependency>
+    <dependency> <!-- necessary for Java 9+ -->
       <groupId>org.apache.tomcat</groupId>
       <artifactId>annotations-api</artifactId>
       <version>6.0.53</version>
       <scope>provided</scope>
+    </dependency>
+
+    <!-- Avro -->
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${ver.avro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${ver.avro}</version>
+      <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+      <version>${ver.avro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-compiler</artifactId>
+      <version>${ver.avro}</version>
+      <classifier>sources</classifier>
     </dependency>
 
     <!-- Jena -->
@@ -182,6 +206,25 @@
 
       <!-- Protobuf -->
       <!-- Run protoc -->
+
+      <!-- Avro -->
+      <plugin>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-maven-plugin</artifactId>
+        <version>${ver.avro}</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>schema</goal>
+            </goals>
+            <configuration>
+              <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+              <outputDirectory>${project.basedir}/src/main/avro-generated/</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
     </plugins>
 

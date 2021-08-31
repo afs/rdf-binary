@@ -1,0 +1,33 @@
+// Encoding in Protobuf of an HTTP request-response.
+
+syntax = "proto3";
+
+option java_package         = "org.seaborne.protobuf" ;
+option java_outer_classname = "PB_HTTP" ;
+
+import "google/protobuf/any.proto" ;
+
+service HttpProxy {
+  rpc http (GrpcHttpRequest) returns (GrpcHttpResponse) {}
+}
+
+message GrpcHttpRequest {
+  string URL                  = 1;
+  string method               = 2;
+  map<string, string> headers = 3;
+  google.protobuf.Any body    = 4; 
+}
+
+message GrpcHttpResponse {
+  string URL                  = 1;
+  int32 statusCode            = 2 ;
+  // Assume single valued header fields.
+  map<string, string> headers = 3;
+  google.protobuf.Any body    = 4; 
+}
+
+// Local Variables:
+// tab-width: 2
+// indent-tabs-mode: nil
+// comment-default-style: "//"
+// End:

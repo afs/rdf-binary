@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -16,19 +16,22 @@
  * limitations under the License.
  */
 
-package app;
+package rdfprotobuf;
 
-//import org.apache.jena.riot.system.IRIResolver;
+import org.junit.runner.RunWith ;
+import org.junit.runners.Suite ;
 
-public class NotesRdfBinary {
-    // Lots of XXX
-    // Port tests
+@RunWith(Suite.class)
+@Suite.SuiteClasses( {
+    TestProtobufTerm.class
+//    , TestProtobufSetup.class
+    , TestProtobufStreamRDF.class
+    , TestProtobufResultSet.class
+//    , TestProtobufPatch.class
 
-    // Graph as list triples (block, delimited)
-    // Graph as StreamRDF (items delimited)
-    // StreamRDF as block
+} )
 
-    // Avro 1.10.0
-    // -Dorg.apache.avro.specific.use_custom_coders=true
+public class TS_RDFProtobuf {
+    public static final String TestingDir = "testing/RIOT/RDF-Protobuf" ;
 }
 

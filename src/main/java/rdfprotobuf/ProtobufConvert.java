@@ -19,6 +19,7 @@
 package rdfprotobuf;
 
 
+import java.math.BigDecimal;
 import java.math.BigInteger ;
 
 import org.apache.jena.JenaRuntime ;
@@ -32,14 +33,8 @@ import org.apache.jena.graph.Triple ;
 import org.apache.jena.riot.protobuf.PB_RDF.*;
 import org.apache.jena.riot.system.PrefixMap ;
 import org.apache.jena.riot.system.PrefixMapFactory ;
-//import org.apache.jena.riot.thrift.StreamRDF2Thrift;
-//import org.apache.jena.riot.thrift.Thrift2StreamRDF;
-//import org.apache.jena.riot.thrift.RiotThriftException;
-//import org.apache.jena.riot.thrift.StreamRDF2Thrift;
-//import org.apache.jena.riot.thrift.TRDF;
-//import org.apache.jena.riot.thrift.Thrift2StreamRDF;
-//import org.apache.jena.riot.thrift.wire.* ;
-import org.apache.jena.sparql.core.Quad ;
+import org.apache.jena.sparql.core.Quad;
+//port org.apache.jena.sparql.core.Quad ;
 import org.apache.jena.sparql.core.Var ;
 
 /** Convert to and from Protobuf wire objects.
@@ -61,62 +56,60 @@ public class ProtobufConvert
     private static RDF_Term toProtobufValue(Node node, RDF_Term.Builder term) {
         if ( ! node.isLiteral() )
             return null ;
-
+        term.clear();
         // Value cases : Integer, Double, Decimal
         String lex = node.getLiteralLexicalForm() ;
         RDFDatatype rdt = node.getLiteralDatatype() ;
 
+        // RDF 1.1
         if ( rdt == null )
             return null ;
 
-        return null;
+        if ( rdt.equals(XSDDatatype.XSDdecimal) ) {
+            if ( rdt.isValid(lex)) {
+                BigDecimal decimal = new BigDecimal(lex.trim()) ;
+                int scale = decimal.scale() ;
+                BigInteger bigInt = decimal.unscaledValue() ;
+                if ( bigInt.compareTo(MAX_I) <= 0 && bigInt.compareTo(MIN_I) >= 0 ) {
+                    // This check makes sure that bigInt.longValue() is safe
+                    RDF_Decimal.Builder d = RDF_Decimal.newBuilder().setValue(bigInt.longValue()).setScale(scale);
+                    term.setValDecimal(d) ;
+                    return term.build();
+                }
+            }
+        } else if (
+            rdt.equals(XSDDatatype.XSDinteger) ||
+            rdt.equals(XSDDatatype.XSDlong) ||
+            rdt.equals(XSDDatatype.XSDint) ||
+            rdt.equals(XSDDatatype.XSDshort) ||
+            rdt.equals(XSDDatatype.XSDbyte)
+            ) {
+            // and 4 unsigned equivalents
+            // and positive, negative, nonPostive nonNegativeInteger
 
-//        if ( rdt.equals(XSDDatatype.XSDdecimal) ) {
-//            if ( rdt.isValid(lex)) {
-//                BigDecimal decimal = new BigDecimal(lex.trim()) ;
-//                int scale = decimal.scale() ;
-//                BigInteger bigInt = decimal.unscaledValue() ;
-//                if ( bigInt.compareTo(MAX_I) <= 0 && bigInt.compareTo(MIN_I) >= 0 ) {
-//                    // This check makes sure that bigInt.longValue() is safe
-//                    RDF_Decimal d = RDF_Decimal.newBuilder().setValue(bigInt.longValue()).setScale(scale).build();
-//                    RDF_Literal = RDF_Literal.newBuilder().setDecimal(d);
-//                    term.setValDecimal(d) ;
-//                    return term.build();
-//                }
-//            }
-//        } else if (
-//            rdt.equals(XSDDatatype.XSDinteger) ||
-//            rdt.equals(XSDDatatype.XSDlong) ||
-//            rdt.equals(XSDDatatype.XSDint) ||
-//            rdt.equals(XSDDatatype.XSDshort) ||
-//            rdt.equals(XSDDatatype.XSDbyte)
-//            ) {
-//            // and 4 unsigned equivalents
-//            // and positive, negative, nonPostive nonNegativeInteger
-//
-//            // Conservative - no derived types.
-//            if ( rdt.isValid(lex)) {
-//                try {
-//                    long v = ((Number)node.getLiteralValue()).longValue() ;
-//                    term.setValInteger(v) ;
-//                    return true ;
-//                }
-//                // Out of range for the type, not a long etc etc.
-//                catch (Throwable ex) { }
-//            }
-//        } else if ( rdt.equals(XSDDatatype.XSDdouble) ) {
-//            // XSDfloat??
-//            if ( rdt.isValid(lex)) {
-//                try {
-//                    double v = ((Double)node.getLiteralValue()).doubleValue() ;
-//                    term.setValDouble(v) ;
-//                    return true ;
-//                }
-//                // Out of range for the type, ...
-//                catch (Throwable ex) { }
-//            }
-//        }
-//        return false ;
+            // Conservative - no derived types.
+            if ( rdt.isValid(lex)) {
+                try {
+                    long v = ((Number)node.getLiteralValue()).longValue() ;
+                    term.setValInteger(v) ;
+                    return term.build();
+                }
+                // Out of range for the type, not a long etc etc.
+                catch (Throwable ex) { return null;}
+            }
+        } else if ( rdt.equals(XSDDatatype.XSDdouble) ) {
+            // XSDfloat??
+            if ( rdt.isValid(lex)) {
+                try {
+                    double v = ((Double)node.getLiteralValue()).doubleValue() ;
+                    term.setValDouble(v) ;
+                    return term.build() ;
+                }
+                // Out of range for the type, ...
+                catch (Throwable ex) { }
+            }
+        }
+        return null ;
     }
 
     /**
@@ -124,15 +117,15 @@ public class ProtobufConvert
      * using values (integer, decimal, double) if possible.
      */
     public static RDF_Term toProtobuf(Node node, RDF_Term.Builder term) {
-        return toThrift(node, emptyPrefixMap, term, true);
+        return toProtobuf(node, emptyPrefixMap, term, true);
     }
 
     /**
      * Encode a {@link Node} into an {@link RDF_Term}. Control whether to use values
      * (integer, decimal, double) if possible.
      */
-    public static RDF_Term toThrift(Node node, RDF_Term.Builder term, boolean allowValues) {
-        return toThrift(node, emptyPrefixMap, term, allowValues);
+    public static RDF_Term toProtobuf(Node node, RDF_Term.Builder term, boolean allowValues) {
+        return toProtobuf(node, emptyPrefixMap, term, allowValues);
     }
 
     private static RDF_UNDEF rdfUNDEF = RDF_UNDEF.newBuilder().build();
@@ -141,8 +134,10 @@ public class ProtobufConvert
     private static RDF_ANY rdfANY = RDF_ANY.newBuilder().build();
     private static RDF_Term ANY = RDF_Term.newBuilder().setAny(rdfANY).build();
 
+    private static String dtXSDString = XSDDatatype.XSDstring.getURI();
+
     /** Encode a {@link Node} into an {@link RDF_Term} */
-    public static RDF_Term toThrift(Node node, PrefixMap pmap, RDF_Term.Builder termBuilder, boolean allowValues) {
+    public static RDF_Term toProtobuf(Node node, PrefixMap pmap, RDF_Term.Builder termBuilder, boolean allowValues) {
         if ( node == null)
             return UNDEF;
 
@@ -169,49 +164,56 @@ public class ProtobufConvert
                     return termBuilder.build();
             }
 
-            String lex = node.getLiteralLexicalForm() ;
-            String dt = node.getLiteralDatatypeURI() ;
-            String lang = node.getLiteralLanguage() ;
-
-            // General encoding.
-
             RDF_Literal.Builder literal = RDF_Literal.newBuilder();
+            String lex = node.getLiteralLexicalForm() ;
             literal.setLex(lex);
 
+            // Protobuf default string is ""
+
+            String dt = node.getLiteralDatatypeURI() ;
+            String lang = node.getLiteralLanguage() ;
+            if ( lang.isEmpty() )
+                lang = null;
+
+            // General encoding.
             if ( JenaRuntime.isRDF11 ) {
                 if ( node.getLiteralDatatype().equals(XSDDatatype.XSDstring) ||
                      node.getLiteralDatatype().equals(RDFLangString.rdfLangString) )
                     dt = null ;
             }
 
-            if ( dt != null ) {
+            if ( dt == null && lang == null ) {
+                literal.setSimple(true);
+            } else if ( dt != null ) {
                 RDF_PrefixName dtPrefixName = abbrev(dt, pmap) ;
                 if ( dtPrefixName != null )
                     literal.setDtPrefix(dtPrefixName) ;
-                else
+                else {
                     literal.setDatatype(dt) ;
+                }
+            } else {
+                //if ( lang != null && ! lang.isEmpty() )
+                literal.setLangtag(lang);
             }
-            if ( lang != null && ! lang.isEmpty() )
-                literal.setLangtag(lang) ;
             termBuilder.setLiteral(literal) ;
             return termBuilder.build();
         }
 
         if ( node.isVariable() ) {
-            RDF_VAR var = RDF_VAR.newBuilder().setName(node.getName()).build();
+            RDF_Var var = RDF_Var.newBuilder().setName(node.getName()).build();
             return termBuilder.setVariable(var).build();
         }
 
         if ( node.isNodeTriple() ) {
             Triple triple = node.getTriple();
 
-            RDF_Term sTerm = toThrift(triple.getSubject(), pmap, termBuilder, allowValues);
+            RDF_Term sTerm = toProtobuf(triple.getSubject(), pmap, termBuilder, allowValues);
             termBuilder.clear();
 
-            RDF_Term pTerm = toThrift(triple.getPredicate(), pmap, termBuilder, allowValues);
+            RDF_Term pTerm = toProtobuf(triple.getPredicate(), pmap, termBuilder, allowValues);
             termBuilder.clear();
 
-            RDF_Term oTerm = toThrift(triple.getObject(), pmap, termBuilder, allowValues);
+            RDF_Term oTerm = toProtobuf(triple.getObject(), pmap, termBuilder, allowValues);
             termBuilder.clear();
 
             RDF_Triple tripleTerm = RDF_Triple.newBuilder().setS(sTerm).setP(pTerm).setO(oTerm).build();
@@ -237,91 +239,83 @@ public class ProtobufConvert
      * with the map used to create the {@code RDF_Term} in the first place.
      */
     public static Node convert(RDF_Term term, PrefixMap pmap) {
-        if ( term.hasPrefixName() ) {
-            String x = expand(term.getPrefixName(), pmap) ;
-            if ( x != null )
-                return NodeFactory.createURI(x) ;
-            throw new RiotProtobufException("Failed to expand "+term) ;
-            //Log.warn(BinRDF.class, "Failed to expand "+term) ;
-            //return NodeFactory.createURI(prefix+":"+localname) ;
-        }
-
-        if ( term.hasIri() )
-            return NodeFactory.createURI(term.getIri().getIri()) ;
-
-        if ( term.hasBnode() )
-            return NodeFactory.createBlankNode(term.getBnode().getLabel()) ;
-
-        if ( term.hasLiteral() ) {
-            RDF_Literal lit = term.getLiteral() ;
-            String lex = lit.getLex() ;
-            String dtString = null ;
-            String lang = null;
-            switch ( lit.getLangOrDatatypeCase() ) {
-                case DATATYPE :
-                    dtString = lit.getDatatype();
-                    break;
-                case DTPREFIX : {
-                    String x = expand(lit.getDtPrefix(), pmap);
-                    if ( x == null )
-                        throw new RiotProtobufException("Failed to expand datatype prefix name: "+lit.getDtPrefix()) ;
-                    dtString = x;
-                    break;
+        switch (term.getTermCase()) {
+            case IRI :
+                return NodeFactory.createURI(term.getIri().getIri()) ;
+            case BNODE :
+                return NodeFactory.createBlankNode(term.getBnode().getLabel()) ;
+            case LITERAL : {
+                if ( term.hasLiteral() ) {
+                    RDF_Literal lit = term.getLiteral() ;
+                    String lex = lit.getLex() ;
+                    switch ( lit.getLiteralKindCase() ) {
+                        case SIMPLE :
+                            return NodeFactory.createLiteral(lex) ;
+                        case LANGTAG : {
+                            String lang = lit.getLangtag();
+                            return NodeFactory.createLiteral(lex, lang) ;
+                        }
+                        case DATATYPE : {
+                            String dtString = lit.getDatatype();
+                            RDFDatatype dt = NodeFactory.getType(dtString) ;
+                            return NodeFactory.createLiteral(lex, dt) ;
+                        }
+                        case DTPREFIX : {
+                            String x = expand(lit.getDtPrefix(), pmap);
+                            if ( x == null )
+                                throw new RiotProtobufException("Failed to expand datatype prefix name: "+lit.getDtPrefix()) ;
+                            RDFDatatype dt = NodeFactory.getType(x) ;
+                            return NodeFactory.createLiteral(lex, dt) ;
+                        }
+                        case LITERALKIND_NOT_SET :
+                            throw new RiotProtobufException("Literal kind not set.");
+                    }
                 }
-                case LANGORDATATYPE_NOT_SET :
-                    throw new RiotProtobufException("Missing datatype/lang : "+lit) ;
-                case LANGTAG :
-                    lang = lit.getLangtag();
-                    break;
-                default :
-                    throw new RiotProtobufException("Unrecognized literal kind: "+lit) ;
             }
-
-            if ( lang != null )
-                return NodeFactory.createLiteral(lex, lang) ;
-            RDFDatatype dt = NodeFactory.getType(dtString) ;
-            return NodeFactory.createLiteral(lex, dt) ;
+            case PREFIXNAME : {
+                String x = expand(term.getPrefixName(), pmap) ;
+                if ( x != null )
+                    return NodeFactory.createURI(x) ;
+                throw new RiotProtobufException("Failed to expand "+term) ;
+            }
+            case VARIABLE :
+                return Var.alloc(term.getVariable().getName()) ;
+            case TRIPLETERM : {
+                RDF_Triple rt = term.getTripleTerm();
+                Triple t = convert(rt, pmap);
+                return NodeFactory.createTripleNode(t);
+            }
+            case ANY :
+                return Node.ANY ;
+            case REPEAT :
+                throw new RiotProtobufException("REPEAT not implemented") ;
+            case UNDEFINED :
+                return null;
+            case VALINTEGER : {
+                long x = term.getValInteger() ;
+                String lex = Long.toString(x, 10) ;
+                RDFDatatype dt = XSDDatatype.XSDinteger ;
+                return NodeFactory.createLiteral(lex, dt) ;
+            }
+            case VALDOUBLE : {
+                double x = term.getValDouble() ;
+                String lex = Double.toString(x) ;
+                RDFDatatype dt = XSDDatatype.XSDdouble ;
+                return NodeFactory.createLiteral(lex, dt) ;
+            }
+            case VALDECIMAL : {
+                long value = term.getValDecimal().getValue() ;
+                int scale =  term.getValDecimal().getScale() ;
+                BigDecimal d =  BigDecimal.valueOf(value, scale) ;
+                String lex = d.toPlainString() ;
+                RDFDatatype dt = XSDDatatype.XSDdecimal ;
+                return NodeFactory.createLiteral(lex, dt) ;
+            }
+            case TERM_NOT_SET :
+                throw new RiotProtobufException("RDF_Term not set") ;
+            default:
+                throw new RiotProtobufException("No conversion to a Node: "+term.toString()) ;
         }
-
-//        if ( term.hasValInteger() ) {
-//            long x = term.getValInteger() ;
-//            String lex = Long.toString(x, 10) ;
-//            RDFDatatype dt = XSDDatatype.XSDinteger ;
-//            return NodeFactory.createLiteral(lex, dt) ;
-//        }
-//
-//        if ( term.hasValDouble() ) {
-//            double x = term.getValDouble() ;
-//            String lex = Double.toString(x) ;
-//            RDFDatatype dt = XSDDatatype.XSDdouble ;
-//            return NodeFactory.createLiteral(lex, dt) ;
-//        }
-//
-//        if ( term.hasValDecimal() ) {
-//            long value = term.getValDecimal().getValue() ;
-//            int scale =  term.getValDecimal().getScale() ;
-//            BigDecimal d =  BigDecimal.valueOf(value, scale) ;
-//            String lex = d.toPlainString() ;
-//            RDFDatatype dt = XSDDatatype.XSDdecimal ;
-//            return NodeFactory.createLiteral(lex, dt) ;
-//        }
-
-        if ( term.hasTripleTerm() ) {
-            RDF_Triple rt = term.getTripleTerm();
-            Triple t = convert(rt, pmap);
-            return NodeFactory.createTripleNode(t);
-        }
-
-        if ( term.hasVariable() )
-            return Var.alloc(term.getVariable().getName()) ;
-
-        if ( term.hasAny() )
-            return Node.ANY ;
-
-        if ( term.hasUndefined() )
-            return null;
-
-        throw new RiotProtobufException("No conversion to a Node: "+term.toString()) ;
     }
 
     private static String expand(RDF_PrefixName prefixName, PrefixMap pmap) {
@@ -343,7 +337,7 @@ public class ProtobufConvert
 
     public static RDF_Term convert(Node node, PrefixMap pmap, boolean allowValues) {
         RDF_Term.Builder n = RDF_Term.newBuilder();
-        return toThrift(node, pmap, n, allowValues) ;
+        return toProtobuf(node, pmap, n, allowValues) ;
     }
 
     /** Produce a {@link RDF_PrefixName} is possible. */
