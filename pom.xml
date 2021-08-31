@@ -37,6 +37,8 @@
     <ver.protobuf>3.17.3</ver.protobuf>
     <ver.grpc>1.40.1</ver.grpc>
 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.outputTimestamp>${maven.build.timestamp}</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
@@ -71,15 +73,15 @@
       <artifactId>grpc-stub</artifactId>
       <version>${ver.grpc}</version>
     </dependency>
-    
-    <!-- necessary for Java 9+ -->
+
+    <!-- necessary for Java 9+ - - >
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>annotations-api</artifactId>
       <version>6.0.53</version>
       <scope>provided</scope>
     </dependency>
-
+    -->
     <!-- Jena -->
 
     <dependency>
@@ -128,6 +130,7 @@
         </configuration>
       </plugin>
 
+      <!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -146,6 +149,7 @@
           </execution>
         </executions>
       </plugin>
+      -->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -46,10 +46,3 @@ RDB*/
 
 ## Fuseki area
 run/
-
-## Generated
-src/generated/
-src/generated/
-src/main/avro-generated/
-src/main/generated/
-

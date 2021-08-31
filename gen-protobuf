@@ -10,12 +10,12 @@
 PROTO="${1:-binary-rdf.proto}"
 
 # Find the namespace
-PKG=src/main/generated/
+PKG=src/main/java/
 PKG="$PKG/org/apache/jena/riot/protobuf/"
 rm -f "$PKG"/*.java
 
 protoc --proto_path=src/main/proto/ \
-       --java_out=src/main/generated/ \
+       --java_out=src/main/java/ \
        src/main/proto/"$PROTO"
 
 F=$PKG/PB_RDF.java
