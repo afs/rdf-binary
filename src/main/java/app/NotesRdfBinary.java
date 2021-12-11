@@ -21,14 +21,27 @@ package app;
 //import org.apache.jena.riot.system.IRIResolver;
 
 public class NotesRdfBinary {
-    // Lots of XXX
-    // Port tests
-
     // Graph as list triples (block, delimited)
     // Graph as StreamRDF (items delimited)
     // StreamRDF as block
 
-    // Avro 1.10.0
-    // -Dorg.apache.avro.specific.use_custom_coders=true
-}
+    // ****
+    // [x] ?? Refactor PBinRDF into two : blk and delimited.
+    // [ ] Own "deblocker" (lib has two objects, LimitedInputStream and CodedInputStream per row)
+    //     Avoid LimitedInputStream
+    // One CodedInputStream over BlockInputStream which has .move() which reads on
+    // varint and sets the limit detection.
 
+    // [x] Setup, Lang and registration.
+    // [x] TestProtobufSetup
+    //     Update io/rdf-binary.html and javadoc
+    // [x] License for PB_RDF
+    // [x] Tests of readers and writers.
+
+    // [x] Check buffering
+
+    // Licenses:
+    // apache-jena
+    // apache-jena-fuseki
+    // Combined jars: jena-fuseki-server, jena-fuseki-fulljar, jena-fuseki-war, jena-fuseki-docker
+}

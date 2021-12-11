@@ -23,9 +23,10 @@
 
 syntax = "proto3";
 
-option java_package         = "org.apache.jena.riot.protobuf" ;
+option java_package         = "org.apache.jena.riot.protobuf.wire" ;
+// Prefer one file with static inner classes.
 option java_outer_classname = "PB_RDF" ;
-
+//option java_multiple_files = true;
 // ==== RDF Term Definitions 
 
 message RDF_IRI {
